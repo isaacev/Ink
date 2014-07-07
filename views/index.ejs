@@ -1,0 +1,126 @@
+<% include partials/header %>
+	<style>
+		#heroTitle {
+			margin: 32px 0 64px 0;
+			font-weight: normal;
+			font-size: 48px;
+			text-align: center;
+			}
+
+		.chunk {
+			margin-top: 36px;
+			padding: 0 32px;
+			}
+			.chunk.center {
+				text-align: center;
+				}
+			.narrow {
+				max-width: 448px;
+				margin: 0 auto 16px auto;
+				text-align: left;
+				}
+				.narrow.center {
+					text-align: center;
+					}
+				.chunk h2.center {
+					margin-bottom: 16px;
+					text-align: center;
+					}
+				hr.narrow {
+					max-width: 512px;
+					height: 2px;
+					margin: 32px auto 0 auto;
+					border-style: none;
+					background-color: rgb(238, 238, 238);
+					}
+				#bookmarklet {
+					width: 128px;
+					margin: 0 auto 64px auto;
+					padding: 16px 32px;
+					display: block;
+					background-color: transparent;
+					border: 1px solid rgb(237, 85, 59);
+					border-radius: 8px;
+					font-family: inherit;
+					font-size: 20px;
+					color: rgb(237, 85, 59);
+					text-align: center;
+					cursor: pointer;
+					transition: background-color 0.2s;
+					}
+					#bookmarklet:hover {
+						text-decoration: none;
+						background-color: rgb(237, 85, 59);
+						color: white;
+						transition: background-color 0.1s;
+						}
+
+		#modal h2 {
+			color: rgb(180, 180, 180);
+			-webkit-user-select: none;
+			cursor: default;
+			}
+			#modal h2 span[data-which] {
+				cursor: pointer;
+				}
+				#modal h2 span[data-which]:hover {
+					color: black;
+					text-decoration: underline;
+					}
+				#modal h2 span[data-which].active {
+					color: black;
+					text-decoration: none;
+					cursor: default;
+					}
+			#modal form {
+				padding: 0 32px 32px 32px;
+				}
+				#modal input[type=email], #modal form input[type=password] {
+					width: 302px;
+					}
+				#modal label[for=staySignedIn] {
+					height: 36px;
+					line-height: 36px;
+					}
+				#modal button.form {
+					float: right;
+					}
+			#modal #errorMessage {
+				width: -webkit-calc(100% - 64px);
+				height: 24px;
+				padding: 16px 32px;
+				display: none;
+				background-color: rgb(237, 85, 59);
+				line-height: 24px;
+				color: white;
+				}
+				#modal.errorMessage {
+					top: 72px;
+					}
+				#modal.errorMessage #errorMessage {
+					display: block;
+					}
+	</style>
+	<main>
+		<h1 id="heroTitle" class="slab">Make reading more enjoyable</h1>
+		<div class="chunk">
+			<h2 class="center slab">Remove clutter</h2>
+			<p class="narrow copy serif">When reading, don't be distracted by ads, popups or peripheral links. Ink extracts just the content from the page and formats it for maximum readability.</p>
+		</div>
+		<hr class="narrow">
+		<div class="chunk">
+			<h2 class="center slab">Save for later</h2>
+			<p class="narrow copy serif">Not enough time to read right now but worried you wont be able to find the page again? Don't fret. Ink saves articles you select both online and offline so you can pick up whenever you have the time.</p>
+		</div>
+		<hr class="narrow">
+		<div class="chunk">
+			<h2 class="center slab">Useful tools</h2>
+			<p class="narrow copy serif">Ink provides some simple tools to make reading as easy as possible. Ink remembers how much of an article you've read so you can pick up just where you left off, even if it's on another device. Ink also provides note-taking, export and a handful of other useful utilities.</p>
+		</div>
+		<hr class="narrow">
+		<div class="chunk">
+			<p class="narrow copy center serif">Drag this button into your bookmarks bar to get started:</p>
+			<a id="bookmarklet" href="javascript:(function(){alert('hello world')})()">Ink this</a>
+		</div>
+	</main>
+<% include partials/footer %>

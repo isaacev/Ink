@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Ink</title>
+		<link rel="stylesheet" type="text/css" href="/static/css/global.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/form.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/modal.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/mobile.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/fa.css">
+		<!-- <link rel="stylesheet" type="text/css" href="/static/css/index.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/library.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/read.css"> -->
+
+		<script type="text/javascript" src="/static/js/jquery.js"></script>
+	</head>
+	<body>
+		<div id="menu" class="sansserif">
+			<ul>
+				<li><span class="icon fa fa-book"></span><a href="/library">Library</a></li>
+				<li><span class="icon fa fa-search"></span><a href="/search">Search</a></li>
+				<hr>
+				<li class="noIcon">Settings</li>
+				<li class="noIcon">Sign out</li>
+				<hr>
+				<li class="noIcon">Help</li>
+			</ul>
+		</div>
+		<div id="content">
+			<nav class="globalWidth">
+				<span id="menuButton" class="fa fa-bars"></span>
+				<a id="anchor" class="slab" href="/">ink</a>
+				<button id="userAction" class="empty slab">
+					<% if (typeof(user) != 'undefined') { %>
+						<a href="/account">Account</a>
+					<% } else { %>
+						<a href="/signin">Sign in</a>
+					<% } %>
+				</button>
+			</nav>

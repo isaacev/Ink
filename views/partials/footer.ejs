@@ -1,0 +1,14 @@
+		</div><!-- end of #content -->
+		<script>
+			$('#menuButton').click(function () {
+				if ($('#content').hasClass('aside')) {
+					$('#content').removeClass('aside');
+					$('body').removeClass('lock');
+				} else {
+					$('#content').addClass('aside');
+					$('body').addClass('lock');
+				}
+			});
+		</script>
+	</body>
+</html>

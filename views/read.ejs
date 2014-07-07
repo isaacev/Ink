@@ -1,0 +1,29 @@
+<% include partials/header %>
+	<style>
+		#container {
+			margin: 0 32px;
+			font-size: 16px;
+			}
+			#container #title {
+				margin: 0 0 24px 0;
+				}
+			#container h2 {
+				margin: 32px 0 16px 0;
+				}
+			#container h3 {
+				margin: 16px 0 8px 0;
+				font: bold 18px Georgia, serif;
+				}
+			#container h4 {
+				margin: 16px 0 8px 0;
+				font: bold 18px Georgia, serif;
+				}
+			#container p {
+				text-indent: 32px;
+				line-height: 150%;
+				}
+	</style>
+	<main>
+		<iframe id="container" src="/read/<%= article._id %>?raw=true"></iframe>
+	</main>
+<% include partials/footer %>

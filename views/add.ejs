@@ -1,0 +1,15 @@
+<% include partials/header %>
+	<main>
+		<h1 class="title slab">Add an article</h1>
+		<form class="center slab" action="/add" method="post">
+			<ul class="form">
+				<li>
+					<label for="url">URL:</label><input class="text normal" name="url" type="url" spellcheck="false" autofocus="true">
+				</li>
+				<li>
+					<button class="form" type="submit">Add</button>
+				</li>
+			</ul>
+		</form>
+	</main>
+<% include partials/footer %>

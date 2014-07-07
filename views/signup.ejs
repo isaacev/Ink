@@ -1,0 +1,21 @@
+<% include partials/header %>
+	<main>
+		<h1 class="title slab">Sign up</h1>
+		<% if (message.length > 0) { %>
+			<div id="warning"><%= message %></div>
+		<% } %>
+		<form class="center slab" action="/signup" method="post">
+			<ul class="form">
+				<li>
+					<label for="email">Email:</label><input class="text normal" name="email" type="email" spellcheck="false" autofocus="true">
+				</li>
+				<li>
+					<label for="password">Password:</label><input class="text normal" name="password" type="password">
+				</li>
+				<li>
+					<label for="staySignedIn">Stay signed in:</label><input name="staySignedIn" type="checkbox"><button class="form" type="submit">Sign up</button>
+				</li>
+			</ul>
+		</form>
+	</main>
+<% include partials/footer %>

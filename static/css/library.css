@@ -1,0 +1,42 @@
+#library {
+	margin: 0 16px;
+	list-style: none;
+	}
+	.article {
+		padding: 0 16px 16px 16px;
+		}
+		.article + .article {
+			margin-top: 8px;
+			padding-top: 24px;
+			border-top: 1px solid rgb(238, 238, 238);;
+			}
+		div.actions {
+			height: 24px;
+			color: rgb(180, 180, 180);
+			opacity: 0;
+			}
+			span.action {
+				display: inline-block;
+				font-size: 14px;
+				line-height: 24px;
+				}
+				li.article:hover div.actions {
+					opacity: 1.0;
+					}
+		a.title {
+			margin-bottom: 8px;
+			display: block;
+			font-size: 24px;
+			}
+		span.details {
+			margin-bottom: 8px;
+			display: block;
+			font-weight: normal;
+			font-size: 14px;
+			color: rgb(180, 180, 180);
+			}
+		p.sample {
+			width: 100%;
+			max-width: 512px;
+			display: block;
+			}

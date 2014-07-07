@@ -1,0 +1,86 @@
+<% include partials/header %>
+	<style>
+		#library {
+			margin: 0 16px;
+			list-style: none;
+			}
+			.article {
+				padding: 0 16px 16px 16px;
+				}
+				.article + .article {
+					margin-top: 8px;
+					padding-top: 24px;
+					border-top: 1px solid rgb(238, 238, 238);;
+					}
+				div.actions {
+					height: 24px;
+					color: rgb(180, 180, 180);
+					opacity: 0;
+					}
+					span.action {
+						display: inline-block;
+						font-size: 14px;
+						line-height: 24px;
+						}
+						li.article:hover div.actions {
+							opacity: 1.0;
+							}
+				a.title {
+					margin-bottom: 8px;
+					display: block;
+					font-size: 24px;
+					}
+				span.details {
+					margin-bottom: 8px;
+					display: block;
+					font-weight: normal;
+					font-size: 14px;
+					color: rgb(180, 180, 180);
+					}
+				p.sample {
+					width: 100%;
+					max-width: 512px;
+					display: block;
+					}
+	</style>
+	<main class="globalWidth">
+		<% if (typeof(articles) != 'undefined' && articles.length > 0) { %>
+			<ul id="library">
+				<% for (var i = 0, len = articles.length; i < len; i++) { %>
+					<%
+						var id = articles[i]._id;
+						var meta = articles[i].meta
+					%>
+					<li class="article" data-id="<%= id %>">
+						<a class="title serif" href="/read/<%= id %>"><%= meta.title %></a>
+						<span class="details serif"><a class="url" href="<%= articles[i].url %>" target="_blank"><%= meta.domain %></a><% if (typeof(meta.readTime) != 'undefined') { %>&ensp;&middot;&ensp;<span class="duration"><%= meta.readTime %> minutes</span><% } %><% if (typeof(meta.author) != 'undefined') { %>&ensp;&middot;&ensp;<span class="author">by <%= meta.author %></span><% } %></span>
+						<div class="actions serif" data-id="<%= id %>"><span class="action pseudoLink" data-which="star">star</span>&ensp;&middot;&ensp;<span class="action pseudoLink" data-which="share">share</span>&ensp;&middot;&ensp;<span class="action pseudoLink" data-which="delete">delete</span></div>
+					</li>
+				<% } %>
+			</ul>
+			<script>
+				$('ul#library').on('click', 'span.action', function () {
+					var id = $(this).parent().attr('data-id');
+					var which = $(this).attr('data-which');
+
+					if (which === 'delete') {
+						$.ajax({
+							url: '/delete/' + id,
+							type: 'DELETE',
+							success: function () {
+								console.log(arguments);
+								$('li.article[data-id=' + id + ']').remove();
+
+								if ($('li.article').length < 1) {
+									$('main').html('<p class="copy center serif">Sorry! No articles but you can <a href="/add">add some</a></p>');
+								}
+							}
+						});
+					}
+				})
+			</script>
+		<% } else { %>
+			<p class="copy center serif">Sorry! No articles but you can <a href="/add">add some</a></p>
+		<% } %>
+	</main>
+<% include partials/footer %>
