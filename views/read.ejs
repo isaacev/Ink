@@ -23,7 +23,7 @@
 				line-height: 150%;
 				}
 	</style>
-	<main>
-		<iframe id="container" src="/read/<%= article._id %>?raw=true"></iframe>
+	<main class="globalWidth">
+		<div id="container"><h1 id="title"><%= article.meta.title %></h1><%- article.content.html %></div>
 	</main>
 <% include partials/footer %>

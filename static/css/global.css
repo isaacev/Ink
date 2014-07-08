@@ -31,16 +31,23 @@
 
 		a:link {
 			color: inherit;
-			text-decoration: none;
+			text-decoration: underline;
 			}
 		a:visited {
 			color: inherit;
-			text-decoration: none;
+			text-decoration: underline;
 			}
 		a:hover {
 			color: rgb(6, 133, 135);
 			text-decoration: underline;
 			}
+
+		a.noUnderline, a.onlyHover {
+			text-decoration: none;
+			}
+			a.onlyHover:hover {
+				text-decoration: underline;
+				}
 
 		.pseudoLink {
 			color: inherit;

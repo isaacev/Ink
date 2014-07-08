@@ -42,6 +42,10 @@
 					max-width: 512px;
 					display: block;
 					}
+	
+		#noArticles {
+			text-align: center;
+			}
 	</style>
 	<main class="globalWidth">
 		<% if (typeof(articles) != 'undefined' && articles.length > 0) { %>
@@ -52,8 +56,9 @@
 						var meta = articles[i].meta
 					%>
 					<li class="article" data-id="<%= id %>">
-						<a class="title serif" href="/read/<%= id %>"><%= meta.title %></a>
-						<span class="details serif"><a class="url" href="<%= articles[i].url %>" target="_blank"><%= meta.domain %></a><% if (typeof(meta.readTime) != 'undefined') { %>&ensp;&middot;&ensp;<span class="duration"><%= meta.readTime %> minutes</span><% } %><% if (typeof(meta.author) != 'undefined') { %>&ensp;&middot;&ensp;<span class="author">by <%= meta.author %></span><% } %></span>
+						<a class="title serif noUnderline" href="/read/<%= id %>"><%= meta.title %></a>
+						<span class="details serif"><a class="url onlyHover" href="<%= articles[i].url %>" target="_blank"><%= meta.domain %></a><% if (typeof(meta.readTime) != 'undefined') { %>&ensp;&middot;&ensp;<span class="duration"><%= meta.readTime %> minutes</span><% } %><% if (typeof(meta.author) != 'undefined') { %>&ensp;&middot;&ensp;<span class="author">by <%= meta.author %></span><% } %></span>
+						<% if (typeof(meta.summary) != 'undefined') { %><p class="sample copy serif"><%= meta.summary %></p><% } %>
 						<div class="actions serif" data-id="<%= id %>"><span class="action pseudoLink" data-which="star">star</span>&ensp;&middot;&ensp;<span class="action pseudoLink" data-which="share">share</span>&ensp;&middot;&ensp;<span class="action pseudoLink" data-which="delete">delete</span></div>
 					</li>
 				<% } %>
@@ -64,23 +69,25 @@
 					var which = $(this).attr('data-which');
 
 					if (which === 'delete') {
-						$.ajax({
-							url: '/delete/' + id,
-							type: 'DELETE',
-							success: function () {
-								console.log(arguments);
-								$('li.article[data-id=' + id + ']').remove();
+						if (confirm('Delete this article?')) {
+							$.ajax({
+								url: '/delete/' + id,
+								type: 'DELETE',
+								success: function () {
+									console.log(arguments);
+									$('li.article[data-id=' + id + ']').remove();
 
-								if ($('li.article').length < 1) {
-									$('main').html('<p class="copy center serif">Sorry! No articles but you can <a href="/add">add some</a></p>');
+									if ($('li.article').length < 1) {
+										$('main').html('<p id="noArticles" class="serif">Sorry! No articles but you can <a href="/add">add some</a></p>');
+									}
 								}
-							}
-						});
+							});
+						}
 					}
 				})
 			</script>
 		<% } else { %>
-			<p class="copy center serif">Sorry! No articles but you can <a href="/add">add some</a></p>
+			<p id="noArticles" class="serif">Sorry! No articles but you can <a href="/add">add some</a></p>
 		<% } %>
 	</main>
 <% include partials/footer %>
