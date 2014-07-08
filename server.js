@@ -18,8 +18,8 @@ require('./config/passport')(Passport);
 
 // set up Express
 var app = Express();
-var port = 3000;
 app.use(Morgan('dev'));
+var port = Number(process.env.PORT || 3000);
 app.use(CookieParser());
 app.use(BodyParser());
 
