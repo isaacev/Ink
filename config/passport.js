@@ -2,8 +2,9 @@
 
 var LocalStrategy = require('passport-local').Strategy;
 
-// load user model
+// load models
 var User = require('../app/models/user.js');
+var Invite = require('../app/models/invite.js');
 
 module.exports = function (passport) {
 	////////// PASSPORT SESSION SETUP //////////
@@ -43,9 +44,9 @@ module.exports = function (passport) {
 				// check to see if there's already a user with that email
 				if (user) {
 					return done(null, false, req.flash('signupMessage', 'That email is already taken'));
-				} else {
-					// there is no user with that email
-					// so create new user
+				} else if (req.body.invite === 'override') {
+					// TODO: this override is only temporary
+					// create new user
 					var newUser = new User();
 
 					// set the user's local credentials
@@ -58,7 +59,111 @@ module.exports = function (passport) {
 							throw err;
 						}
 
-						return done(null, newUser);
+						// assign three available invites to new user
+						Invite.find({
+							userId: 'unassigned'
+						}, function (err, invites) {
+							if (err) {
+								console.log(err);
+								return done(null, newUser);
+							}
+
+							// assign and save each invite
+							invites[0].userId = newUser._id;
+							invites[0].save(function (err) {
+								invites[1].userId = newUser._id;
+								invites[1].save(function (err) {
+									invites[2].userId = newUser._id;
+									invites[2].save(function (err) {
+										return done(null, newUser);
+									});
+								});
+							});
+						});
+					});
+				} else {
+					// there is no user with that email
+					// so check if invitation code is valid and unused
+					Invite.findOne({
+						code: req.body.invite
+					}, function (err, invite) {
+						if (err) {
+							return done(err);
+						}
+
+						if (invite) {
+							if (invite.used === false) {
+								// disable the used invite
+								invite.used = true;
+
+								// and save that change to the database
+								invite.save(function (err) {
+									if (err) {
+										throw err;
+									}
+								});
+
+								// create new user
+								var newUser = new User();
+
+								// set the user's local credentials
+								newUser.local.email = email;
+								newUser.local.password = newUser.generateHash(password);
+
+								// save the user
+								newUser.save(function (err) {
+									if (err) {
+										throw err;
+									}
+
+									// assign three available invites to new user
+									Invite.find({
+										userId: 'unassigned'
+									}, function (err, invites) {
+										if (err) {
+											console.log(err);
+											return done(null, newUser);
+										}
+
+										// assign and save each invite
+										// make sure there are enough unassigned invites for 1
+										if (invites.length > 1) {
+											invites[0].userId = newUser._id;
+											invites[0].save(function (err) {
+
+												// make sure there are enough unassigned invites for 2
+												if (invites.length > 2) {
+													invites[1].userId = newUser._id;
+													invites[1].save(function (err) {
+
+														// and make sure there are enough unassigned invites for 3
+														if (invites.length > 3) {
+															invites[2].userId = newUser._id;
+															invites[2].save(function (err) {
+																return done(null, newUser);
+															});
+														} else {
+															// if there aren't enough invites, just be done
+															return done(null, newUser);
+														}
+													});
+												} else {
+													// if there aren't enough invites, just be done
+													return done(null, newUser);
+												}
+											});
+										} else {
+											// if there aren't enough invites, just be done
+											return done(null, newUser);
+										}
+									});
+								});
+							} else {
+								return done(null, false, req.flash('signupMessage', 'That invite has already been used'));
+							}
+						} else {
+							return done(null, false, req.flash('signupMessage', 'That invite does not exist'));
+						}
 					});
 				}
 			});

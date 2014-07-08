@@ -1,6 +1,7 @@
 // app/routes.js
 
 var ArticleController = require('./controllers/article.js');
+var InviteController = require('./controllers/invite.js');
 
 module.exports = function (app, passport) {
 
@@ -47,13 +48,6 @@ module.exports = function (app, passport) {
 		res.render('library.ejs', {
 			user: req.user,
 			articles: res.locals
-		});
-	});
-
-	// render account
-	app.get('/account', userIsSignedIn, function (req, res) {
-		res.render('account.ejs', {
-			user: req.user
 		});
 	});
 
@@ -113,36 +107,18 @@ module.exports = function (app, passport) {
 		res.json(res.locals);
 	});
 
-	app.get('/search/:query', ArticleController.searchArticles, function (req, res) {
+	// create invite
+	app.post('/invites/create', InviteController.addInvite, function (req, res) {
 		res.json(res.locals);
 	});
 
-
-
-	////////// APPLICATION PROGRAMMING INTERFACE //////////
-
-	// add an article
-	app.post('/api/1/articles/add', serviceIsSignedIn, ArticleController.addArticle, function (req, res) {
+	// get unassigned invites
+	app.get('/invites/unassigned', InviteController.getUnassignedInvites, function (req, res) {
 		res.json(res.locals);
 	});
 
-	// get all articles for user
-	app.get('/api/1/articles', serviceIsSignedIn, ArticleController.getArticles, function (req, res) {
-		res.json(res.locals);
-	});
-
-	// get an article
-	app.get('/api/1/articles/:article_id', serviceIsSignedIn, ArticleController.getArticle, function (req, res) {
-		res.json(res.locals);
-	});
-
-	// change an article
-	app.put('/api/1/articles/:article_id', serviceIsSignedIn, ArticleController.putArticle, function (req, res) {
-		res.json(res.locals);
-	});
-
-	// delete an article
-	app.delete('/api/1/articles/:article_id', serviceIsSignedIn, ArticleController.deleteArticle, function (req, res) {
+	// get users allocated invites
+	app.get('/invites/allocated', userIsSignedIn, InviteController.getAllocatedInvites, function (req, res) {
 		res.json(res.locals);
 	});
 };
