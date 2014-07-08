@@ -4,7 +4,7 @@ var Ink = require('../ink.js');
 var Article = require('../models/article.js');
 
 exports.addArticle = function (req, res, next) {
-	Ink.parse(url, function (err, data) {
+	Ink.parse(req.body.url, function (err, article) {
 		if (err) {
 			res.send(err);
 		}
@@ -12,13 +12,13 @@ exports.addArticle = function (req, res, next) {
 		var newArticle = new Article();
 
 		newArticle.userId = req.user._id;
-		newArticle.url = data.url;
+		newArticle.url = article.url;
 
-		newArticle.meta.title = data.meta.title;
-		newArticle.meta.author = data.meta.author;
+		newArticle.meta.title = article.meta.title;
+		newArticle.meta.author = article.meta.author;
 		newArticle.meta.readTime = article.meta.readTime;
-		newArticle.meta.summary = data.meta.summary;
-		newArticle.meta.domain = data.meta.domain;
+		newArticle.meta.summary = article.meta.summary;
+		newArticle.meta.domain = article.meta.domain;
 
 		newArticle.content.html = article.content.html;
 		newArticle.content.text = article.content.text;

@@ -6,10 +6,10 @@ var Request = require('request');
 var Readability = require('node-readability');
 
 // load article model
-var Article = require('./app/models/article.js');
+var Article = require('./models/article.js');
 
 // parse html
-function parse(html, callback) {
+function parse(url, html, callback) {
 	Readability(html, function (err, doc) {
 		if (err) {
 			return callback(err);
@@ -17,14 +17,14 @@ function parse(html, callback) {
 
 		var $ = Cheerio.load(doc.content);
 
-		var text = $.text();
+		var text = $('body').text();
 
 		callback(null, {
 			url: url,
 			meta: {
 				title: doc.title.trim(),
 				author: author($),
-				readTime: readTime($),
+				readTime: readTime(text),
 				summary: summary(text),
 				domain: extractDomain(url)
 			},
@@ -67,11 +67,15 @@ function author($) {
 }
 
 // estimate read time (in minutes) by counting words and dividing by 200
-function readTime($) {
-	var words = $.text();
-	var total = words.split(' ').length;
-	console.log(Math.floor(total / 200) || 1);
+function readTime(words) {
+	var total = (words.split(' ')).length;
+	console.log('TOTAL WORDS:', words);
 	return Math.floor(total / 200) || 1;
+}
+
+// get summary form text
+function summary(text) {
+	return text.split(' ').slice(0, 20);
 }
 
 // extract URL domain
@@ -86,7 +90,7 @@ exports.parse = function (url, callback) {
 			res.send(err);
 		}
 
-		parse(html, function (err, article) {
+		parse(url, html, function (err, article) {
 			callback(null, article);
 		});
 	});
