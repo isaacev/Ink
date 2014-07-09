@@ -45,11 +45,65 @@
 	</style>
 	<main>
 		<h1 class="title slab">Account</h1>
-		<fieldset>
-			<legend>Settings</legend>
-			<ul>
-				<li></li>
-			</ul>
+		<fieldset class="account">
+			<legend class="slab">Invite codes</legend>
+				<% if (invites.length > 0) { %>
+				<ul id="invites" class="monospace">
+					<%
+						for (var i = 0; i < invites.length; i++) {
+							if (invites[i].used == true) {
+								%><li class="used monospace"><%= invites[i].code %></li><%
+							} else {
+								%><li class="monospace"><%= invites[i].code %><span class="fa fa-send-o" title="send invite via email"></span></li><%
+							}
+						}
+					%>
+				</ul>
+				<% } else { %>
+					<!-- do stuff -->
+				<% } %>
+		</fieldset>
+		<fieldset class="account">
+			<legend class="slab">Change email</legend>
+			<form class="center slab">
+				<ul class="form">
+					<li>
+						<label for="email">New email:</label><input class="text normal" name="email" type="email" spellcheck="false">
+					</li>
+					<li>
+						<button class="form" type="submit">Use new email</button>
+					</li>
+				</ul>
+			</form>
+		</fieldset>
+		<fieldset class="account">
+			<legend class="slab">Change password</legend>
+			<form class="center slab">
+				<ul class="form">
+					<li>
+						<label for="oldPassword">Old password:</label><input class="text normal" name="oldPassword" type="password">
+					</li>
+					<li>
+						<label for="newPassword">New password:</label><input class="text normal" name="newPassword" type="password">
+					</li>
+					<li>
+						<label for="confirmPassword">Confirm:</label><input class="text normal" name="confirmPassword" type="password">
+					</li>
+					<li>
+						<button class="form" type="submit">Apply new password</button>
+					</li>
+				</ul>
+			</form>
+		</fieldset>
+		<fieldset class="account">
+			<legend class="slab">Danger zone</legend>
+			<form class="center slab">
+				<ul class="form">
+					<li>
+						<button class="form danger" type="submit">Delete account &amp; erase all data</button>
+					</li>
+				</ul>
+			</form>
 		</fieldset>
 	</main>
 <% include partials/footer %>
