@@ -26,6 +26,37 @@
 				}
 	</style>
 	<main class="globalWidth">
-		<div id="container"><h1 id="title"><%= article.meta.title %></h1><%- article.content.html %></div>
+		<iframe id="frame" src="/read/<%= article._id %>?raw=true" scrolling="no"></iframe>
 	</main>
+	<script>
+		$(window).resize(function () {
+			positionHeader();
+		});
+
+		function positionHeader() {
+			var headerWidth = $('nav').width();
+			var windowWidth = $(window).width();
+			$('nav').css('left', (windowWidth - headerWidth) / 2)
+		}
+
+		positionHeader();
+
+		var oldPos = 0;
+		var navHidden = false;
+		$(window).scroll(function () {
+			if ($(this).scrollTop() <= 0) {
+				if (navHidden === true) {
+					$('nav').removeClass('fadedOut');
+					navHidden = false;
+				}
+			} else if (navHidden === false) {
+				$('nav').addClass('fadedOut');
+				navHidden = true;
+			}
+		});
+
+		$('#frame').load(function () {
+			$(this).height($(this).contents().find('body').height());
+		});
+	</script>
 <% include partials/footer %>
