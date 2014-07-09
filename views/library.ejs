@@ -78,6 +78,15 @@
 					}
 	</style>
 	<main class="globalWidth">
+		<div id="folders" class="serif">
+			<ul>
+				<li><a class="noUnderline" href="/add"><span class="fa fa-plus"></span>Add article</a></li>
+				<hr>
+				<li><a class="noUnderline" href="/library"><span class="fa fa-book"></span>Library</a></li>
+				<li><a class="noUnderline" href="/library?filter=starred"><span class="fa fa-star"></span>Starred</a></li>
+				<li><a class="noUnderline" href="/library?filter=archive"><span class="fa fa-archive"></span>Archive</a></li>
+			</ul>
+		</div>
 		<% if (typeof(articles) != 'undefined' && articles.length > 0) { %>
 			<ul id="library">
 				<% for (var i = 0, len = articles.length; i < len; i++) { %>
