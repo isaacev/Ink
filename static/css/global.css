@@ -35,6 +35,9 @@
 		.sansserif {
 			font-family: Helvetica, sans-serif;
 			}
+		.monospace {
+			font-family: "Source Code Pro", Courier, monospace;
+			}
 
 		a:link {
 			color: inherit;
