@@ -47,7 +47,8 @@ module.exports = function (app, passport) {
 	app.get('/library', userIsSignedIn, ArticleController.getArticles, function (req, res) {
 		res.render('library.ejs', {
 			user: req.user,
-			articles: res.locals
+			articles: res.locals,
+			filter: req.query.filter
 		});
 	});
 
@@ -71,6 +72,14 @@ module.exports = function (app, passport) {
 				article: res.locals
 			});
 		}
+	});
+
+	// render user account
+	app.get('/account', userIsSignedIn, InviteController.getAllocatedInvites, function(req, res) {
+		res.render('account.ejs', {
+			user: req.user,
+			invites: res.locals
+		});
 	});
 
 

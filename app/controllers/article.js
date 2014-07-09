@@ -35,16 +35,32 @@ exports.addArticle = function (req, res, next) {
 };
 
 exports.getArticles = function (req, res, next) {
-	Article.find({
-		userId: req.user._id
-	}, function (err, articles) {
+	var callback = function (err, articles) {
 		if (err) {
 			res.send(err);
 		}
 
 		res.locals = articles;
 		next();
-	});
+	};
+
+	// resolve article filters
+	if (req.query.filter == 'starred') {
+		Article.find({
+			userId: req.user._id,
+			'meta.archived': false,
+			'mea.starred': true
+		}, callback);
+	} else if (req.query.filter == 'archive') {
+		Article.find({
+			userId: req.user._id,
+			'meta.archived': true
+		}, callback);
+	} else {
+		Article.find({
+			userId: req.user._id
+		}, callback);
+	}
 };
 
 exports.getArticle = function (req, res, next) {
@@ -99,18 +115,6 @@ exports.deleteArticle = function (req, res, next) {
 		res.locals = {
 			message: 'article removed'
 		};
-		next();
-	});
-};
-
-exports.searchArticles = function (req, res, next) {
-	console.log('QUERY:', req.params.query);
-	Article.textSearch(req.params.query, function (err, output) {
-		if (err) {
-			res.send(err);
-		}
-
-		res.locals = arguments;
 		next();
 	});
 };
