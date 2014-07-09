@@ -116,10 +116,6 @@
 			min-width: 768px;
 			}
 
-		#menu {
-			display: none;
-			}
-
 		div.actions {
 			opacity: 1.0 !important;
 		}
@@ -132,9 +128,6 @@
 			border-bottom: 2px solid rgb(238, 238, 238);
 			-webkit-user-select: none;
 			}
-			#menuButton {
-				display: none;
-				}
 			#anchor {
 				width: 38px;
 				height: 24px;
