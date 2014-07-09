@@ -1,26 +1,28 @@
 <% include partials/header %>
 	<style>
-		#container {
-			margin: 0 32px;
-			font-size: 16px;
+		nav {
+			position: fixed;
+			top: 0;
+			transition: opacity 0.2s;
 			}
-			#container #title {
-				margin: 0 0 24px 0;
+			nav.fadedOut {
+				opacity: 0;
+				transition: opacity 0.2s;
 				}
-			#container h2 {
-				margin: 32px 0 16px 0;
+			nav:hover {
+				opacity: 1;
+				transition: opacity 0.2s;
+				background-color: rgba(250, 250, 250, 0.8)
 				}
-			#container h3 {
-				margin: 16px 0 8px 0;
-				font: bold 18px Georgia, serif;
-				}
-			#container h4 {
-				margin: 16px 0 8px 0;
-				font: bold 18px Georgia, serif;
-				}
-			#container p {
-				text-indent: 32px;
-				line-height: 150%;
+		main {
+			margin-top: 74px;
+			}
+			#frame {
+				width: 640px;
+				height: 3100px;
+				margin: 0 auto;
+				display: block;
+				border-style: none;
 				}
 	</style>
 	<main class="globalWidth">

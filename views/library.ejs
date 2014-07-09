@@ -1,5 +1,39 @@
 <% include partials/header %>
 	<style>
+		#folders {
+			width: 192px;
+			margin: 0 0 0 32px;
+			float: left;
+			}
+			#folders ul {
+				list-style: none;
+				}
+				#folders li {
+					height: 36px;
+					line-height: 36px;
+					cursor: pointer;
+					}
+					#folders li:hover {
+						color: rgb(6, 133, 135);
+						}
+					#folders li span.fa {
+						width: 24px;
+						display: inline-block;
+						}
+					#folders hr {
+						width: 192px;
+						height: 1px;
+						margin: 16px 0;
+						position: relative;
+						left: -16px;
+						background-color: rgb(238, 238, 238);
+						}
+					#newFolder {
+						opacity: 0.3;
+						}
+						#newFolder:hover {
+							opacity: 1;
+							}
 		#library {
 			margin: 0 16px;
 			list-style: none;
@@ -42,10 +76,6 @@
 					max-width: 512px;
 					display: block;
 					}
-	
-		#noArticles {
-			text-align: center;
-			}
 	</style>
 	<main class="globalWidth">
 		<% if (typeof(articles) != 'undefined' && articles.length > 0) { %>
