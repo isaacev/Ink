@@ -5,6 +5,7 @@ body.modalOpen {
 #shadow {
 	width: 100%;
 	height: 100%;
+	display: none;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -12,6 +13,9 @@ body.modalOpen {
 	overflow: hidden;
 	z-index: 100;
 	}
+	body.modalOpen #shadow {
+		display: block;
+		}
 
 #modal {
 	width: 512px;
@@ -21,6 +25,3 @@ body.modalOpen {
 	background-color: rgb(250, 250, 250);
 	z-index: 1000;
 	}
-	#modal h2 {
-		padding: 32px;
-		}
