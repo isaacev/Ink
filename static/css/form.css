@@ -50,6 +50,16 @@ button.form {
 	border-radius: 4px;
 	color: white;
 	}
+	button.form:focus {
+		background-color: rgb(78, 185, 159);
+		}
+
+button.danger {
+	background-color: rgb(230, 40, 40);
+	}
+	button.danger:focus {
+		background-color: rgb(230, 40, 40);
+		}
 
 label {
 	width: 128px;
