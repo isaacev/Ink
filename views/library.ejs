@@ -116,6 +116,10 @@
 					}
 				})
 			</script>
+		<% } else if (filter == 'archive') { %>
+			<p id="noArticles" class="serif">No articles in your archive.<br><br><a href="/faq#archive">What is an archive?</a></p>
+		<% } else if (filter == 'starred') { %>
+			<p id="noArticles" class="serif">No articles starred.<br><br><a href="/faq#star">Wondering how to star articles?</a></p>
 		<% } else { %>
 			<p id="noArticles" class="serif">Sorry! No articles but you can <a href="/add">add some</a></p>
 		<% } %>
