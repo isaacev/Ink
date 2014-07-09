@@ -89,18 +89,12 @@
 		</div>
 		<% if (typeof(articles) != 'undefined' && articles.length > 0) { %>
 			<ul id="library">
-				<% for (var i = 0, len = articles.length; i < len; i++) { %>
-					<%
-						var id = articles[i]._id;
-						var meta = articles[i].meta
-					%>
-					<li class="article" data-id="<%= id %>">
-						<a class="title serif noUnderline" href="/read/<%= id %>"><%= meta.title %></a>
-						<span class="details serif"><a class="url onlyHover" href="<%= articles[i].url %>" target="_blank"><%= meta.domain %></a><% if (typeof(meta.readTime) != 'undefined') { %>&ensp;&middot;&ensp;<span class="duration"><%= meta.readTime %> minutes</span><% } %><% if (typeof(meta.author) != 'undefined') { %>&ensp;&middot;&ensp;<span class="author">by <%= meta.author %></span><% } %></span>
-						<% if (typeof(meta.summary) != 'undefined') { %><p class="sample copy serif"><%= meta.summary %></p><% } %>
-						<div class="actions serif" data-id="<%= id %>"><span class="action pseudoLink" data-which="star">star</span>&ensp;&middot;&ensp;<span class="action pseudoLink" data-which="share">share</span>&ensp;&middot;&ensp;<span class="action pseudoLink" data-which="delete">delete</span></div>
-					</li>
-				<% } %>
+				<%
+					for (var i = 0, len = articles.length; i < len; i++) {
+						var article = articles[i];
+						%><% include partials/stub %><%
+					}
+				%>
 			</ul>
 			<script>
 				$('ul#library').on('click', 'span.action', function () {

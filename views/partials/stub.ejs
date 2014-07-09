@@ -1,0 +1,11 @@
+<li class="article" data-id="<%= article._id %>">
+	<a class="title serif noUnderline" href="/read/<%= article._id %>"><%= article.meta.title %></a>
+	<span class="details serif"><a class="url onlyHover" href="<%= article.url %>" target="_blank"><%= article.meta.domain %></a><%
+		if (typeof(article.meta.readTime) != 'undefined') {
+	%>&ensp;&middot;&ensp;<span class="duration"><%= article.meta.readTime %> min</span><% }
+		if (typeof(article.meta.author) != 'undefined') {
+	%>&ensp;&middot;&ensp;<span class="author">by <%= article.meta.author %></span><% } %></span><%
+		if (typeof(article.meta.summary) != 'undefined') {
+	%><p class="sample copy serif"><%= article.meta.summary %></p><% } %>
+	<div class="actions serif" data-id="<%= article._id %>"><span class="action pseudoLink" data-which="star">star</span>&ensp;&middot;&ensp;<span class="action pseudoLink" data-which="archive">archive</span>&ensp;&middot;&ensp;<span class="action pseudoLink" data-which="share">share</span>&ensp;&middot;&ensp;<span class="action pseudoLink" data-which="delete">delete</span></div>
+</li>
