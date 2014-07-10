@@ -5,7 +5,11 @@ var Mongoose = require('mongoose');
 var Readability = require('readabilitySAX').Readability;
 var Parser = require('htmlparser2').Parser;
 var Request = require('request');
-var Cherrio = require('cheerio');
+var Cheerio = require('cheerio');
+
+// set up parser
+var readable = new Readability({});
+var parser = new Parser(readable, {});
 
 // Block constructor
 function Block(tag, opts) {
@@ -16,7 +20,7 @@ function Block(tag, opts) {
 	} else {
 		var canBeEmpty = opts.canBeEmpty;
 	}
-	
+
 	this.tag = tag;
 	this.contents = [];
 	this.inlineOpen = false;
@@ -81,9 +85,6 @@ function Block(tag, opts) {
 	}
 }
 
-module.exports = Block;
-
-
 // load Mongoose models
 var Article = require('./models/article.js');
 
@@ -102,7 +103,6 @@ function parse(url, html, callback) {
 	parser.write($.html());
 
 	// break HTML down and rebuild in preferred structure
-
 	// lists of permitted block and inline elements
 	var blockElems = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'blockquote'];
 	var specialElems = ['img', 'a'];
@@ -141,9 +141,9 @@ function parse(url, html, callback) {
 								} else {
 									out += contents[i].toHTML();
 								}
-
-								return out + '</a>';
 							}
+
+							return out + '</a>';
 						}
 					});
 					break;
@@ -213,23 +213,18 @@ function parse(url, html, callback) {
 		}
 	}
 
-	// declare html encoding
-	var html = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
-
-	// add title to file
-	html += '<h1>' + readable.getTitle() + '</h1>';
-
 	// compile HTML and plaintext from block tree
+	var html = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
 	var text = '';
 	for (var i = 0, len = blocks.length; i < len; i++) {
 		text += blocks[i].toString();
 		html += blocks[i].toHTML();
 	}
 
-	callback({
+	callback(null, {
 		url: url,
 		meta: {
-			title: readalbe.getTitle(),
+			title: readable.getTitle(),
 			author: author($),
 			readTime: readTime(text),
 			summary: summary(text),
@@ -255,7 +250,7 @@ function readTime(text) {
 
 // get summary from text by taking first 20 words
 function summary(text) {
-	return text.split(' ').slice(0, 20);
+	return (text.split(' ').slice(0, 30)).join(' ') + '...';
 }
 
 // extract URL domain
