@@ -19,6 +19,10 @@ var articleSchema = Mongoose.Schema({
 		readTime: String,
 		summary: String,
 		domain: String,
+		createdAt: {
+			type: Date,
+			default: Date.now
+		},
 		starred: {
 			type: Boolean,
 			default: false
