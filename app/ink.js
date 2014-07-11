@@ -7,10 +7,6 @@ var Parser = require('htmlparser2').Parser;
 var Request = require('request');
 var Cheerio = require('cheerio');
 
-// set up parser
-var readable = new Readability({});
-var parser = new Parser(readable, {});
-
 // Block constructor
 function Block(tag, opts) {
 	opts = opts || {};
@@ -50,7 +46,13 @@ function Block(tag, opts) {
 
 	this.empty = function () {
 		if (canBeEmpty === true) {
-			return (this.contents.length ? false : true);
+			if (this.contents.length == 0) {
+				return true;
+			} else if (this.contents.toString().length == 0) {
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -90,12 +92,18 @@ var Article = require('./models/article.js');
 
 // parse html
 // TODO: the async nature of this function is vestigial, remove it
-function parse(url, html, callback) {
+function parse(url, opts, html, callback) {
+	opts = opts || {};
+
+	// set up parser
+	var readable = new Readability(opts);
+	var parser = new Parser(readable, {});
+
 	// load DOM for jQuery manipulation
 	var $ = Cheerio.load(html);
 
 	// remove blacklisted elements and their children
-	var blacklist = ['table'];
+	var blacklist = ['table', 'header'];
 	for (var i = 0, len = blacklist.length; i < len; i++) {
 		$(blacklist[i]).remove();
 	}
@@ -122,7 +130,11 @@ function parse(url, html, callback) {
 				switch (tag) {
 				case 'a':
 					// get the highest block in the block tree
-					if (blocks.length > 1) {
+					if (blocks.length === 0) {
+						// if a link is the first element, create a paragraph to contain it
+						blocks.push(new Block('p'));
+						selectedBlock = blocks[0];
+					} else if (blocks.length > 1) {
 						selectedBlock = blocks[blocks.length - 1];
 					} else {
 						selectedBlock = blocks[0];
@@ -234,7 +246,7 @@ function parse(url, html, callback) {
 			html: html,
 			text: text
 		}
-	});
+	}, readable.getArticle());
 }
 
 // try to extract author name from metadata
@@ -265,10 +277,15 @@ exports.parse = function (url, callback) {
 			res.send(err);
 		}
 
-		parse(url, html, function (err, article) {
-			callback(null, article);
+		parse(url, {}, html, function (err, article, meta) {
+			if (meta.textLength < 250) {
+				// try again, but more lenient
+				parse(url, { stripUnlikelyCandidates: false }, html, function (errSecond, articleSecond, metaSecond) {
+					callback(null, articleSecond);
+				});
+			} else {
+				callback(null, article);
+			}
 		});
 	});
 };
-
-exports.test = parse;
