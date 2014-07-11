@@ -40,6 +40,11 @@ exports.getArticles = function (req, res, next) {
 			res.send(err);
 		}
 
+		// sort articles by date (newest -> oldest)
+		articles.sort(function (a, b) {
+			return b.meta.createdAt - a.meta.createdAt;
+		});
+
 		res.locals = articles;
 		next();
 	};
