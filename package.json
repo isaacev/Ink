@@ -1,5 +1,6 @@
 {
   "name": "ink",
+  "version": "0.2.2",
   "main": "server.js",
   "dependencies": {
     "express": "~4.0.0",

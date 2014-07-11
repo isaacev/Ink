@@ -1,5 +1,5 @@
 // ink.js
-// v0.2
+// v0.2.2
 
 var Mongoose = require('mongoose');
 var Readability = require('readabilitySAX').Readability;
