@@ -17,16 +17,61 @@
 		main {
 			margin-top: 74px;
 			}
-			#frame {
+			#article {
 				width: 640px;
-				height: 3100px;
 				margin: 0 auto;
 				display: block;
 				border-style: none;
+				font: 18px/34px Georgia, serif;
 				}
+				#article h1#title {
+					font-size: 32px;
+					line-height: 150%;
+					}
+				#article #details {
+					margin: 8px 0 16px 0;
+					font-size: 16px;
+					line-height: normal;
+					color: rgb(180, 180, 180);
+					}
+				#article a:link {
+					color: rgb(6, 133, 135);
+					text-decoration: none;
+					}
+				#article a:visited {
+					color: rgb(6, 133, 135);
+					text-decoration: none;
+					}
+				#article a:hover {
+					color: rgb(6, 133, 135);
+					text-decoration: underline;
+					}
+				#article a.noUnderline, a.onlyHover {
+					text-decoration: none;
+					}
+					a.onlyHover:hover {
+						text-decoration: underline;
+						}
+
+				#article h2 {
+					margin: 32px 0 16px 0;
+					border-bottom: 2px solid rgb(238, 238, 238);
+					}
+				#article img {
+					max-width: 604px;
+					height: auto;
+					margin: 32px auto;
+					padding: 16px;
+					display: block;
+					background-color: white;
+					box-shadow:0 1px 2px #aaa;
+					}
+				#article p + p {
+					margin-top: 16px;
+					}
 	</style>
 	<main class="globalWidth">
-		<iframe id="frame" src="/read/<%= article._id %>?raw=true" scrolling="no"></iframe>
+		<div id="article"><h1 id='title'><%= article.meta.title %></h1><div id="details"><a class="source" href="<%= article.url %>"><%= article.meta.domain %></a><% if (typeof(article.meta.author) != 'undefined') { %>&ensp;&middot;&ensp;<span class="author">by <%= article.meta.author %></span><% } %></div><%- article.content.html %></div>
 	</main>
 	<script>
 		$(window).resize(function () {
@@ -53,10 +98,6 @@
 				$('nav').addClass('fadedOut');
 				navHidden = true;
 			}
-		});
-
-		$('#frame').load(function () {
-			$(this).height($(this).contents().find('body').height());
 		});
 	</script>
 <% include partials/footer %>

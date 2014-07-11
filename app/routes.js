@@ -61,17 +61,10 @@ module.exports = function (app, passport) {
 
 	// render read article
 	app.get('/read/:article_id', userIsSignedIn, ArticleController.getArticle, function (req, res) {
-		if (req.query.raw == 'true') {
-			res.render('raw.ejs', {
-				user: req.user,
-				article: res.locals
-			});
-		} else {
-			res.render('read.ejs', {
-				user: req.user,
-				article: res.locals
-			});
-		}
+		res.render('read.ejs', {
+			user: req.user,
+			article: res.locals
+		});
 	});
 
 	// render user account
