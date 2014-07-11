@@ -46,12 +46,15 @@ function Block(tag, opts) {
 
 	this.empty = function () {
 		if (canBeEmpty === true) {
-			if (this.contents.length == 0) {
-				return true;
-			} else if (this.contents.toString().length == 0) {
-				return true;
-			} else {
+			var out = '';
+			for (var i = 0, len = this.contents.length; i < len; i++) {
+				out += this.contents[i].toString();
+			}
+
+			if (out.trim().length) {
 				return false;
+			} else {
+				return true;
 			}
 		} else {
 			return false;
@@ -92,18 +95,19 @@ var Article = require('./models/article.js');
 
 // parse html
 // TODO: the async nature of this function is vestigial, remove it
-function parse(url, opts, html, callback) {
-	opts = opts || {};
-
+function parse(url, html, callback) {
 	// set up parser
-	var readable = new Readability(opts);
+	var readable = new Readability({
+		stripUnlikelyCandidates: false,
+		cleanConditionally: false
+	});
 	var parser = new Parser(readable, {});
 
 	// load DOM for jQuery manipulation
 	var $ = Cheerio.load(html);
 
 	// remove blacklisted elements and their children
-	var blacklist = ['table', 'header'];
+	var blacklist = ['table', 'header', 'form'];
 	for (var i = 0, len = blacklist.length; i < len; i++) {
 		$(blacklist[i]).remove();
 	}
@@ -112,8 +116,8 @@ function parse(url, opts, html, callback) {
 
 	// break HTML down and rebuild in preferred structure
 	// lists of permitted block and inline elements
-	var blockElems = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'blockquote'];
-	var specialElems = ['img', 'a'];
+	var blockElems = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'blockquote', 'ul', 'ol', 'li'];
+	var specialElems = ['img', 'a', 'em', 'i', 'strong'];
 
 	// chunks of parsed code, the "block tree"
 	var blocks = [];
@@ -128,6 +132,9 @@ function parse(url, opts, html, callback) {
 				blocks.push(new Block(tag));
 			} else if (specialElems.indexOf(tag) > -1) {
 				switch (tag) {
+				case 'em':
+				case 'i':
+				case 'strong':
 				case 'a':
 					// get the highest block in the block tree
 					if (blocks.length === 0) {
@@ -145,7 +152,11 @@ function parse(url, opts, html, callback) {
 						// anchor elements have special build function to incorporate
 						// their href property into the HTML
 						build: function (contents) {
-							var out = '<a href="' + attrs.href + '">';
+							if (tag === 'a') {
+								var out = '<a href="' + attrs.href + '">';
+							} else {
+								var out = '<' + tag + '>';
+							}
 
 							for (var i = 0, len = contents.length; i < len; i++) {
 								if (typeof contents[i] === 'string') {
@@ -155,7 +166,7 @@ function parse(url, opts, html, callback) {
 								}
 							}
 
-							return out + '</a>';
+							return out + '</' + tag + '>';
 						}
 					});
 					break;
@@ -173,22 +184,23 @@ function parse(url, opts, html, callback) {
 		},
 		ontext: function (text) {
 			// make sure it isn't an empty text node
-			if (text.trim().length) {
-				if (blocks.length > 1) {
-					selectedBlock = blocks[blocks.length - 1];
-				} else {
-					selectedBlock = blocks[0];
-				}
-
-				// add more text to the highest block in the block tree
-				selectedBlock.append(text);
+			if (blocks.length > 1) {
+				selectedBlock = blocks[blocks.length - 1];
+			} else {
+				selectedBlock = blocks[0];
 			}
+
+			// add more text to the highest block in the block tree
+			selectedBlock.append(text);
 		},
 		onclosetag: function (tag) {
 			if (blockElems.indexOf(tag) > -1) {
 				blocks.push(new Block(tag));
 			} else if (specialElems.indexOf(tag) > -1) {
 				switch (tag) {
+				case 'em':
+				case 'i':
+				case 'strong':
 				case 'a':
 					if (blocks.length > 1) {
 						selectedBlock = blocks[blocks.length - 1];
@@ -277,15 +289,8 @@ exports.parse = function (url, callback) {
 			res.send(err);
 		}
 
-		parse(url, {}, html, function (err, article, meta) {
-			if (meta.textLength < 250) {
-				// try again, but more lenient
-				parse(url, { stripUnlikelyCandidates: false }, html, function (errSecond, articleSecond, metaSecond) {
-					callback(null, articleSecond);
-				});
-			} else {
-				callback(null, article);
-			}
+		parse(url, html, function (err, article, meta) {
+			callback(null, article);
 		});
 	});
 };
