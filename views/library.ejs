@@ -87,44 +87,44 @@
 				<li><a class="noUnderline" href="/library?filter=archive"><span class="fa fa-archive"></span>Archive</a></li>
 			</ul>
 		</div>
-		<% if (typeof(articles) != 'undefined' && articles.length > 0) { %>
-			<ul id="library">
+		<ul id="library">
+			<% if (typeof(articles) != 'undefined' && articles.length > 0) { %>
 				<%
 					for (var i = 0, len = articles.length; i < len; i++) {
 						var article = articles[i];
 						%><% include partials/stub %><%
 					}
 				%>
-			</ul>
-			<script>
-				$('ul#library').on('click', 'span.action', function () {
-					var id = $(this).parent().attr('data-id');
-					var which = $(this).attr('data-which');
+			<% } else if (filter == 'archive') { %>
+				<p id="noArticles" class="serif">No articles in your archive.<br><br><a href="/faq#archive">What is an archive?</a></p>
+			<% } else if (filter == 'starred') { %>
+				<p id="noArticles" class="serif">No articles starred.<br><br><a href="/faq#star">Wondering how to star articles?</a></p>
+			<% } else { %>
+				<p id="noArticles" class="serif">Sorry! No articles but you can <a href="/add">add some</a></p>
+			<% } %>
+		</ul>
+		<script>
+			$('ul#library').on('click', 'span.action', function () {
+				var id = $(this).parent().attr('data-id');
+				var which = $(this).attr('data-which');
 
-					if (which === 'delete') {
-						if (confirm('Delete this article?')) {
-							$.ajax({
-								url: '/delete/' + id,
-								type: 'DELETE',
-								success: function () {
-									console.log(arguments);
-									$('li.article[data-id=' + id + ']').remove();
+				if (which === 'delete') {
+					if (confirm('Delete this article?')) {
+						$.ajax({
+							url: '/delete/' + id,
+							type: 'DELETE',
+							success: function () {
+								console.log(arguments);
+								$('li.article[data-id=' + id + ']').remove();
 
-									if ($('li.article').length < 1) {
-										$('main').html('<p id="noArticles" class="serif">Sorry! No articles but you can <a href="/add">add some</a></p>');
-									}
+								if ($('li.article').length < 1) {
+									$('#library').html('<p id="noArticles" class="serif">Sorry! No articles but you can <a href="/add">add some</a></p>');
 								}
-							});
-						}
+							}
+						});
 					}
-				})
-			</script>
-		<% } else if (filter == 'archive') { %>
-			<p id="noArticles" class="serif">No articles in your archive.<br><br><a href="/faq#archive">What is an archive?</a></p>
-		<% } else if (filter == 'starred') { %>
-			<p id="noArticles" class="serif">No articles starred.<br><br><a href="/faq#star">Wondering how to star articles?</a></p>
-		<% } else { %>
-			<p id="noArticles" class="serif">Sorry! No articles but you can <a href="/add">add some</a></p>
-		<% } %>
+				}
+			});
+		</script>
 	</main>
 <% include partials/footer %>
