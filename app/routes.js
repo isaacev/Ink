@@ -140,7 +140,7 @@ function userIsSignedIn(req, res, next) {
 	}
 
 	// if they aren't authenticated, redirect them to the signin page
-	res.redirect('/signin?next=library');
+	res.redirect('/signin');
 }
 
 function serviceIsSignedIn(req, res, next) {
