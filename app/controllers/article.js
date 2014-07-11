@@ -49,7 +49,7 @@ exports.getArticles = function (req, res, next) {
 		Article.find({
 			userId: req.user._id,
 			'meta.archived': false,
-			'mea.starred': true
+			'meta.starred': true
 		}, callback);
 	} else if (req.query.filter == 'archive') {
 		Article.find({
