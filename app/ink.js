@@ -107,7 +107,7 @@ function parse(url, html, callback) {
 	var $ = Cheerio.load(html);
 
 	// remove blacklisted elements and their children
-	var blacklist = ['table', 'header', 'form'];
+	var blacklist = ['table', 'header', 'form', '.reflist ol.references'];
 	for (var i = 0, len = blacklist.length; i < len; i++) {
 		$(blacklist[i]).remove();
 	}
