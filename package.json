@@ -1,6 +1,7 @@
 {
   "name": "ink",
   "version": "0.2.2",
+  "description": "a web app that takes a URL and cleans the page to make online reading easier and more enjoyable",
   "main": "server.js",
   "dependencies": {
     "bcrypt-nodejs": "latest",
