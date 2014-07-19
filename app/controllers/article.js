@@ -70,6 +70,7 @@ exports.getArticles = function (req, res, next) {
 
 exports.getArticle = function (req, res, next) {
 	Article.findOne({
+		userId: req.user._id,
 		_id: req.params.article_id
 	}, function (err, article) {
 		if (err) {
