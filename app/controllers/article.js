@@ -83,7 +83,6 @@ exports.getArticle = function (req, res, next) {
 	});
 };
 
-exports.putArticle = function (req, res, next) {
 	Article.findOne({
 		_id: req.params.article_id
 	}, function (err, article) {
@@ -91,13 +90,6 @@ exports.putArticle = function (req, res, next) {
 			res.send(err);
 		}
 
-		article.meta.title = req.params.title || article.meta.title;
-		article.meta.author = req.params.author || article.meta.author;
-		article.meta.readTime = req.params.readTime || article.meta.readTime;
-		article.meta.summary = req.params.summary || article.meta.summary;
-		article.meta.domain = req.params.domain || article.meta.domain;
-		article.content.html = req.params.content || article.content.html;
-		article.content.text = req.params.text || article.content.text;
 
 		article.save(function (err) {
 			if (err) {
