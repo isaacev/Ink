@@ -110,12 +110,21 @@ exports.starArticle = function (req, res, next) {
 		});
 	});
 };
+
+exports.archiveArticle = function (req, res, next) {
+	Article.findOne({
+		userId: req.user._id,
 		_id: req.params.article_id
 	}, function (err, article) {
 		if (err) {
 			res.send(err);
 		}
 
+		if (article.meta.archive === false) {
+			article.meta.archive = true;
+		} else {
+			article.meta.archive = false;
+		}
 
 		article.save(function (err) {
 			if (err) {
