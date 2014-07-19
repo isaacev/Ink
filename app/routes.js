@@ -109,6 +109,16 @@ module.exports = function (app, passport) {
 		res.json(res.locals);
 	});
 
+	// process article star/unstar
+	app.put('/star/:article_id', userIsSignedIn, ArticleController.starArticle, function (req, res) {
+		res.json(res.locals);
+	});
+
+	// process article achive/unarchive
+	app.put('/archive/:article_id', userIsSignedIn, ArticleController.archiveArticle, function (req, res) {
+		res.json(res.locals);
+	});
+
 	// create invite
 	app.post('/invites/create', InviteController.addInvite, function (req, res) {
 		res.json(res.locals);
