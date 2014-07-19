@@ -123,6 +123,30 @@
 							}
 						});
 					}
+				} else if (which === 'star') {
+					$.ajax({
+						url: '/star/' + id,
+						type: 'PUT',
+						success: function (article) {
+							if (article.meta.starred) {
+								$('li.article[data-id=' + id + ']').addClass('starred');
+							} else {
+								$('li.article[data-id=' + id + ']').removeClass('starred');
+							}
+						}
+					});
+				} else if (which === 'archive') {
+					$.ajax({
+						url: '/archive/' + id,
+						type: 'PUT',
+						success: function (article) {
+							if (article.meta.archived) {
+								$('li.article[data-id=' + id + ']').addClass('archived');
+							} else {
+								$('li.article[data-id=' + id + ']').removeClass('archived');
+							}
+						}
+					});
 				}
 			});
 		</script>
