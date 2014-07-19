@@ -7,6 +7,8 @@ var Parser = require('htmlparser2').Parser;
 var Request = require('request');
 var Cheerio = require('cheerio');
 
+var LENGTH_RETRY_THRESHOLD = 120;
+
 // Block constructor
 function Block(tag, opts) {
 	opts = opts || {};
@@ -95,12 +97,11 @@ var Article = require('./models/article.js');
 
 // parse html
 // TODO: the async nature of this function is vestigial, remove it
-function parse(url, html, callback) {
+function parse(url, opts, html, callback) {
+	opts = opts || {};
+
 	// set up parser
-	var readable = new Readability({
-		stripUnlikelyCandidates: false,
-		cleanConditionally: false
-	});
+	var readable = new Readability(opts);
 	var parser = new Parser(readable, {});
 
 	// load DOM for jQuery manipulation
@@ -289,8 +290,17 @@ exports.parse = function (url, callback) {
 			res.send(err);
 		}
 
-		parse(url, html, function (err, article, meta) {
-			callback(null, article);
+		parse(url, {}, html, function (err, article, meta) {
+			if (meta.textLength < LENGTH_RETRY_THRESHOLD) {
+				// try again, but more lenient
+				parse(url, {
+					stripUnlikelyCandidates: false
+				}, html, function (errSecond, articleSecond, metaSecond) {
+					callback(null, articleSecond);
+				});
+			} else {
+				callback(null, article);
+			}
 		});
 	});
 };
