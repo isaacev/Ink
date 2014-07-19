@@ -84,7 +84,32 @@ exports.getArticle = function (req, res, next) {
 	});
 };
 
+exports.starArticle = function (req, res, next) {
 	Article.findOne({
+		userId: req.user._id,
+		_id: req.params.article_id
+	}, function (err, article) {
+		if (err) {
+			res.send(err);
+		}
+
+		if (article.meta.starred === false) {
+			article.meta.starred = true;
+		} else {
+			article.meta.starred = false;
+		}
+
+		article.save(function (err) {
+			if (err) {
+				res.send(err);
+
+			}
+
+			res.locals = article;
+			next();
+		});
+	});
+};
 		_id: req.params.article_id
 	}, function (err, article) {
 		if (err) {
