@@ -23,8 +23,8 @@ module.exports = function (passport) {
 		});
 	});
 
-	////////// LOCAL SIGNUP //////////
-	passport.use('local-signup', new LocalStrategy({
+	////////// SIGNUP //////////
+	passport.use('signup', new LocalStrategy({
 		// by default, local strategy uses username and password, so override with email
 		usernameField: 'email',
 		passwordField: 'password',
@@ -35,7 +35,7 @@ module.exports = function (passport) {
 			// find a user whose email is the same as the form's email
 			// check to see if the user trying to signin already exists
 			User.findOne({
-				'local.email': email
+				'email': email
 			}, function (err, user) {
 				if (err) {
 					return done(err);
@@ -49,9 +49,9 @@ module.exports = function (passport) {
 					// create new user
 					var newUser = new User();
 
-					// set the user's local credentials
-					newUser.local.email = email;
-					newUser.local.password = newUser.generateHash(password);
+					// set the user's credentials
+					newUser.email = email;
+					newUser.password = newUser.generateHash(password);
 
 					// save the user
 					newUser.save(function (err) {
@@ -106,9 +106,9 @@ module.exports = function (passport) {
 								// create new user
 								var newUser = new User();
 
-								// set the user's local credentials
-								newUser.local.email = email;
-								newUser.local.password = newUser.generateHash(password);
+								// set the user's credentials
+								newUser.email = email;
+								newUser.password = newUser.generateHash(password);
 
 								// save the user
 								newUser.save(function (err) {
@@ -170,8 +170,8 @@ module.exports = function (passport) {
 		});
 	}));
 
-	////////// LOCAL SIGNIN //////////
-	passport.use('local-signin', new LocalStrategy({
+	////////// SIGNIN //////////
+	passport.use('signin', new LocalStrategy({
 		// override username with email
 		usernameField: 'email',
 		passwordField: 'password',
@@ -180,7 +180,7 @@ module.exports = function (passport) {
 		// find a user whose email is the same as the form's email
 		// check to see if the user trying to signin already exists
 		User.findOne({
-			'local.email': email
+			'email': email
 		}, function (err, user) {
 			if (err) {
 				return done(err);

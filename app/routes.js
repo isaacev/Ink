@@ -80,7 +80,7 @@ module.exports = function (app, passport) {
 	////////// PROCESSING //////////
 
 	// process the signin form
-	app.post('/signin', passport.authenticate('local-signin', {
+	app.post('/signin', passport.authenticate('signin', {
 		successRedirect: '/library',
 		failureRedirect: '/signin',
 		failureFlash: true
@@ -93,7 +93,7 @@ module.exports = function (app, passport) {
 	});
 
 	// process the signup form
-	app.post('/signup', passport.authenticate('local-signup', {
+	app.post('/signup', passport.authenticate('signup', {
 		successRedirect: '/library',
 		failureRedirect: '/signup',
 		failureFlash: true
