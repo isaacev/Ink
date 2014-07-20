@@ -68,7 +68,7 @@ module.exports = function (app, passport) {
 	});
 
 	// render user account
-	app.get('/account', userIsSignedIn, InviteController.getAllocatedInvites, function(req, res) {
+	app.get('/account', userIsSignedIn, InviteController.getAllocatedInvites, function (req, res) {
 		res.render('account.ejs', {
 			user: req.user,
 			invites: res.locals
