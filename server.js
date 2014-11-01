@@ -9,10 +9,10 @@ var CookieParser = require('cookie-parser');
 var BodyParser = require('body-parser');
 var Session = require('express-session');
 
-var configDb = require('./config/database.js');
+var Vars = require('./config/vars.js');
 
 // configuration
-Mongoose.connect(configDb.url);
+Mongoose.connect(Vars.database);
 
 require('./config/passport')(Passport);
 
@@ -27,7 +27,7 @@ app.set('view engine', 'ejs');
 
 // required for Passport
 app.use(Session({
-	secret: 'TheLannistersSendTheirRegards'
+	secret: Vars.session
 }));
 app.use(Passport.initialize());
 app.use(Passport.session());
