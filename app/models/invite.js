@@ -6,11 +6,13 @@ var Mongoose = require('mongoose');
 var inviteSchema = Mongoose.Schema({
 	seed: {
 		type: Number,
-		unique: true
+		unique: true,
+		required: true
 	},
 	code: {
 		type: String,
-		unique: true
+		unique: true,
+		required: true
 	},
 	userId: {
 		type: String,
