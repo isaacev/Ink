@@ -1,4 +1,4 @@
-// config/database.js
+// config/vars.js
 
 module.exports = {
 	session: process.env.SESSION || 'foobarbaz',
