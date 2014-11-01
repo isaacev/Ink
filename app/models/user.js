@@ -6,7 +6,11 @@ var Bcrypt = require('bcrypt-nodejs');
 // define user schema
 var userSchema = Mongoose.Schema({
 	email: String,
-	password: String
+	password: String,
+	isAdmin: {
+		type: Boolean,
+		default: false
+	}
 });
 
 // generating a hash

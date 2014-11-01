@@ -120,17 +120,17 @@ module.exports = function (app, passport) {
 	});
 
 	// create invite
-	app.post('/invites/create', InviteController.addInvite, function (req, res) {
+	app.post('/invites/create', userIsAdmin, InviteController.addInvite, function (req, res) {
 		res.json(res.locals);
 	});
 
 	// get unassigned invites
-	app.get('/invites/unassigned', InviteController.getUnassignedInvites, function (req, res) {
+	app.get('/invites/unassigned', userIsAdmin, InviteController.getUnassignedInvites, function (req, res) {
 		res.json(res.locals);
 	});
 
 	// get users allocated invites
-	app.get('/invites/allocated', userIsSignedIn, InviteController.getAllocatedInvites, function (req, res) {
+	app.get('/invites/allocated', userIsAdmin, InviteController.getAllocatedInvites, function (req, res) {
 		res.json(res.locals);
 	});
 };
@@ -144,6 +144,17 @@ function userIsSignedIn(req, res, next) {
 
 	// if they aren't authenticated, redirect them to the signin page
 	res.redirect('/signin');
+}
+
+function userIsAdmin(req, res, next) {
+	if (req.isAuthenticated() && req.user.isAdmin === true) {
+		return next();
+	}
+
+	res.statusCode = 401;
+	res.json({
+		error: 'unauthorized'
+	});
 }
 
 function serviceIsSignedIn(req, res, next) {
